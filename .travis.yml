@@ -1,0 +1,25 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t pfvaz/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run pfvaz/react-test npm test -- --coverage
+
+after_success:
+    - docker build -t pfvaz/multi-client ./client
+    - docker build -t pfvaz/multi-nginx ./nginx
+    - docker build -t pfvaz/multi-server ./server
+    - docker build -t pfvaz/multi-worker ./worker
+    
+    #Login to docker cli
+    - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
+    #take this images to docker hub
+    - docker push pfvaz/multi-client
+    - docker push pfvaz/multi-nginx
+    - docker push pfvaz/multi-server
+    - docker push pfvaz/multi-worker
+     
+    
