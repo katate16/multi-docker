@@ -20,6 +20,4 @@ after_success:
     - docker push pfvaz/multi-client
     - docker push pfvaz/multi-nginx
     - docker push pfvaz/multi-server
-    - docker push pfvaz/multi-worker
-     
-    
+    - docker push pfvaz/multi-worker  
